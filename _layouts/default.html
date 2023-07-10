@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="google-site-verification" content="a1ADv8ZqFqpPyedHSmCzSp2Z0LnwFklNIdHWR03AIzY" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Portals Project">
+    <title>{{ page.title }} | {{ page.author }}</title>
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- BOOTSTRAP -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <!-- STYLES -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <!-- Highlight.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/highlight.min.js" integrity="sha512-d00ajEME7cZhepRqSIVsQVGDJBdZlfHyQLNC6tZXYKTG7iwcF8nhlFuppanz8hYgXr8VvlfKh4gLC25ud3c90A==" crossorigin="anonymous"></script>
+    <script>hljs.highlightAll();</script>
+    <!-- PORTALS CSS -->
+    <link rel="stylesheet" type="text/css" href="/assets-demo/css/main.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 align-self-center">
+        <!-- <div class="col-xl-8 col-lg-9 col-md-11 col-xs-12 align-self-center maindiv"> -->
+          <nav>
+            <a class="navbar-brand" href="/">Portals VLDB 2023 Demo</a>
+            <ul>
+              <li {% if "/" == page.url %}class="active"{% endif %}><a href="/">Home</a></li>
+              <li {% if "/project-info" == page.url %}class="active"{% endif %}><a href="/project-info">Project Info</a></li>
+              <li {% if "/shoppingcart" == page.url %}class="active"{% endif %}><a href="/shoppingcart">Demo 1: Shopping Cart</a></li>
+              <li {% if "/sql-to-dataflow" == page.url %}class="active"{% endif %}><a href="/sql-to-dataflow">Demo 2: SQL to Dataflow</a></li>
+              <li {% if "/playground" == page.url %}class="active"{% endif %}><a href="/playground">Demo 3: Playground</a></li>
+            </ul>
+          </nav>
+          <div class="content">
+            {{ content }}
+          </div>
+          <footer>
+            © Portals Project Committee, 2023.
+            <a href="https://github.com/portals-project" title="GitHub"><i class="fa fa-github" aria-hidden="true"></i></a>
+            <br/>
+            <a href="https://github.com/portals-project">https://github.com/portals-project</a>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

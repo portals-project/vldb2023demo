@@ -1,0 +1,141 @@
+body {
+  line-height: 1.5rem;
+  /* color: #373D3F; */
+  color: #000000;
+  font-family: source sans pro;
+  font-size: 1.0rem;
+}
+
+div.maindiv {
+  background-color: #ececec;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0px;
+}
+
+h4,
+h5,
+h6 {
+  margin-bottom: 0px;
+  font-size: 1.0rem;
+}
+
+h1,
+h2,
+nav {
+  font-family: open sans;
+  letter-spacing: 0.10rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+strong {
+  /* color: #1b2b52; */
+  color: #000000;
+  font-weight: bold;
+}
+
+footer>a {
+  font-weight: bold;
+}
+
+a {
+  text-decoration: none;
+  /* color: #8860D0; */
+  /* color: #5900ff; */
+  color: #0004ff;
+}
+
+a.navbar-brand,
+a:hover {
+  /* color: #1b2b52; */
+  color: #000000;
+}
+
+nav {
+  /* border: solid #1b2b52; */
+  border: solid #000000;
+  border-width: 0 0 2px 0;
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+
+nav ul {
+  padding: 0px;
+}
+
+nav ul li.active {
+  text-decoration: underline;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 20px;
+}
+
+footer {
+  border: solid #1b2b52;
+  border-width: 2px 0 0 0;
+}
+
+code {
+  font-family: source code pro;
+  color: #373D3F;
+}
+
+pre.highlight {
+  background-color: white;
+  padding: 0.25rem;
+}
+
+div.meta {
+  font-style: italic;
+  /* color: #8860D0; */
+  /* color: #5900ff; */
+  color: #000000;
+}
+
+div.youtube-container {
+  text-align: center;
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+}
+
+iframe.youtube-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+p.image {
+  background-color: white
+}
+
+span.portals {
+  color: #0004ff;
+}
+
+div.highlight {
+  line-height: 1.2rem;
+}
+
+code.hljs {
+  background: white;
+}
