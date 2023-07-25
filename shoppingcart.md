@@ -7,6 +7,9 @@ title: Shopping Cart
 
 TODO: Explain Shopping Cart example itself
 
+Look at Readme in Portals repository  
+scripts/deployment/README.md
+
 
 # VLDB 2023 Tutorial Helper Script
 
