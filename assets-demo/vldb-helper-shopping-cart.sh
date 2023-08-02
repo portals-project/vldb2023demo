@@ -217,7 +217,7 @@ if [ $1 == "-run_example" ] || [ $1 == "-r" ] || [ $1 == "-all" ] || [ $1 == "-a
     
     # start the client log into output.log
     echo "Starting the shopping cart client"
-    docker run --network host test-client 2>&1 | tee client_output.log
+    docker run --network host shoppingcart-client 2>&1 | tee client_output.log
 
     # stop the port forwarding
     echo "Stopping port forwarding"
