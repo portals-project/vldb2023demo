@@ -190,9 +190,9 @@ if [ $1 == "-setup" ] || [ $1 == "-s" ] || [ $1 == "-all" ] || [ $1 == "-a" ]
 
     # build and load the docker images
     echo "Building the shopping cart client docker image"
-    # docker build -f scripts/deployment/docker/Dockerfile-ShoppingCartClient . -t shoppingcart-client
+    docker build -f scripts/deployment/docker/Dockerfile-ShoppingCartClient . -t shoppingcart-client
     echo "Building the portals server docker image"
-    # docker build -f scripts/deployment/docker/Dockerfile-Server . -t portals-server
+    docker build -f scripts/deployment/docker/Dockerfile-Server . -t portals-server
     echo "Loading the server image into minikube"
     minikube image load portals-server
   
