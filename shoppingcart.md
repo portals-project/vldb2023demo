@@ -5,7 +5,15 @@ title: Shopping Cart
 
 # Shopping Cart
 
-TODO: Explain Shopping Cart example itself
+The scenario consists of four services: an inventory; cart; order; and analytics service. The inventory manages the inventory state in an operator, and exposes this state as a portal service. 
+It can handle either GetItem (take an item from the inventory) or PutItem (put the item back) requests. 
+The user cart interacts with the inventory from one of its operators. 
+For example, to add an item to the cart, it will have to request to get the item (GetItem) from the inventory, by calling the inventory portal, and await the response from the call. 
+The successfully checked-out carts will be consumed by the order service. 
+Lastly, there is an analytics service, that consumes the order history in order to provide real-time recommendations. 
+
+In our example, this produces a top-100 list of item purchases, accessible as a portal service.
+
 
 Look at Readme in Portals repository  
 scripts/deployment/README.md
