@@ -19,7 +19,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/highlight.min.js" integrity="sha512-d00ajEME7cZhepRqSIVsQVGDJBdZlfHyQLNC6tZXYKTG7iwcF8nhlFuppanz8hYgXr8VvlfKh4gLC25ud3c90A==" crossorigin="anonymous"></script>
     <script>hljs.highlightAll();</script>
     <!-- PORTALS CSS -->
-    <link rel="stylesheet" type="text/css" href="/assets-demo/css/main.css">
+    <link rel="stylesheet" type="text/css" href="{{ page.baseurl }}/assets-demo/css/main.css">
   </head>
   <body>
     <div class="container">
@@ -29,11 +29,11 @@
           <nav>
             <a class="navbar-brand" href="/">Portals VLDB 2023 Demo</a>
             <ul>
-              <li {% if "/" == page.url %}class="active"{% endif %}><a href="/">Home</a></li>
-              <li {% if "/project-info" == page.url %}class="active"{% endif %}><a href="/project-info">Project Info</a></li>
-              <li {% if "/shoppingcart" == page.url %}class="active"{% endif %}><a href="/shoppingcart">Demo 1: Shopping Cart</a></li>
-              <li {% if "/sql-to-dataflow" == page.url %}class="active"{% endif %}><a href="/sql-to-dataflow">Demo 2: SQL to Dataflow</a></li>
-              <li {% if "/playground" == page.url %}class="active"{% endif %}><a href="/playground">Demo 3: Playground</a></li>
+              <li {% if "/" == page.url %}class="active"{% endif %}><a href= "{{ page.baseurl }}/">Home</a></li>
+              <li {% if "/project-info" == page.url %}class="active"{% endif %}><a href="{{ page.baseurl }}/project-info">Project Info</a></li>
+              <li {% if "/shoppingcart" == page.url %}class="active"{% endif %}><a href="{{ page.baseurl }}/shoppingcart">Demo 1: Shopping Cart</a></li>
+              <li {% if "/sql-to-dataflow" == page.url %}class="active"{% endif %}><a href="{{ page.baseurl }}/sql-to-dataflow">Demo 2: SQL to Dataflow</a></li>
+              <li {% if "/playground" == page.url %}class="active"{% endif %}><a href="{{ page.baseurl }}/playground">Demo 3: Playground</a></li>
             </ul>
           </nav>
           <div class="content">
@@ -50,3 +50,4 @@
     </div>
   </body>
 </html>
+
