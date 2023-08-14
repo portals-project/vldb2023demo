@@ -241,3 +241,8 @@ And, we can launch the client:
 docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain submitDir --directory target/scala-3.3.0/classes --ip host.docker.internal --port 8080"
 docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.sqltodataflow.SQLToDataflow$ --ip host.docker.internal --port 8080"
 ```
+
+## Notes
+
+> **Note**
+> The portals dockerfile must be built from the `portals-sql-experiment` branch, in order to include the Portals SQL library.
