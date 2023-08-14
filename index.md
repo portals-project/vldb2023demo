@@ -15,4 +15,4 @@ The demo consists of three scenarios.
 
 ## **Scenario 3: Playground** 
 
-The [Portals Playground]({{page.baseurl}}/playground) is a JavaScript-based sandbox capable of running Portals applications. It comes with a JavaScript API, and the runtime is executed in the browser. Read more about the playground [here]({{page.baseurl}}/playground) or try it out at [https://portals-project.org/playground/](https://portals-project.org/playground/).
+The [Portals Playground]({{page.baseurl}}/playground) is a JavaScript-based sandbox capable of running Portals applications. It comes with a JavaScript API, and the runtime is executed in the browser. [Read more about the playground]({{page.baseurl}}/playground) or try it out at [https://portals-project.org/playground/](https://portals-project.org/playground/).
