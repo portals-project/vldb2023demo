@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Playground
+title: "Demo 3: Playground"
 ---
 
 # Demo 3: Playground

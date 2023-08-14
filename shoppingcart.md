@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Shopping Cart
+title: "Demo 1: Shopping Cart"
 ---
 
 # Shopping Cart
