@@ -6,3 +6,5 @@ Gemfile.lock
 .metals
 .scala-build
 .vscode
+project
+target

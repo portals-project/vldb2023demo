@@ -69,7 +69,7 @@ end SQLToDataflow
   *
   * @example
   *   {{{
-  *  sbt "libraries/runMain portals.vldb2023demo.sqltodataflow.SQLToDataflowMain"
+  *  sbt "runMain portals.vldb2023demo.sqltodataflow.SQLToDataflowMain"
   *   }}}
   */
 object SQLToDataflowMain:

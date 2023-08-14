@@ -86,7 +86,7 @@ end SQLToDataflowTxn
   *
   * @example
   *   {{{
-  *  sbt "libraries/runMain portals.vldb2023demo.sqltodataflow.SQLToDataflowTxn"
+  *  sbt "runMain portals.vldb2023demo.sqltodataflow.SQLToDataflowTxnMain"
   *   }}}
   */
 object SQLToDataflowTxnMain:
