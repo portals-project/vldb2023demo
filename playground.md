@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Playground
+title: "Demo 3: Playground"
 ---
 
-# Playground
+# Demo 3: Playground
 
 The Portals playground is a JavaScript-based sandbox capable of running Portals applications that hosts a code editor for writing programs and an output log. It comes with a JavaScript API, and the runtime is executed fully within the browser. The Playground supports most of the core API, and can be used to write multi-dataflow applications and Portal applications, as described in the other two demonstration scenarios. 
 

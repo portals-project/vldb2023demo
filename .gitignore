@@ -3,3 +3,9 @@ Gemfile.lock
 .jekyll-metadata
 *.DS_Store
 \!drafts
+.metals
+.scala-build
+.vscode
+project
+target
+.bloop
