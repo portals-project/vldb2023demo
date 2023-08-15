@@ -21,13 +21,20 @@ More information on the SQL interface is available in a student thesis (the pres
 
 This demo comes in three flavours: `SQLToDataflow.scala`, `SQLToDataflowTxn.scala`, and `SQLToRemoteDataflow.scala`.
 
+> **Note**
+> To execute the demo yourself, check out the instructions in the code directory of this repository: [https://github.com/portals-project/vldb2023demo/tree/main/code](https://github.com/portals-project/vldb2023demo/tree/main/code).
+
+> **Note**
+> To executable code for this demo can be found in the code directory of this repository: [https://github.com/portals-project/vldb2023demo/tree/main/code](https://github.com/portals-project/vldb2023demo/tree/main/code).
+
+
 #### SQLToDataflow
 
 The simplest version is `SQLToDataflow.scala`, which runs both the table and the query workflow in the same Portals Application.
 
 ```scala
 /** Portals application which runs the queriable KV Table. */
-val tableApp = PortalsApp("SQLToDataflowTable"):
+PortalsApp("SQLToDataflowTable"):
 
   /** A Table Workflow which serves SQL queries for the table of type KV. */
   val table = TableWorkflow[Types.KV]("KVTable", "k")
@@ -54,7 +61,7 @@ In addition to this, we show how to also perform transactional queries (SQLToDat
 
 ```scala
 /** Portals application which runs the queriable KV Table. */
-val tableApp = PortalsApp("SQLToDataflowTable"):
+PortalsApp("SQLToDataflowTable"):
 
   /** A Table Workflow which serves SQL queries for the table of type KV. */
   val table = TableWorkflow[Types.KV]("KVTable", "k", true)
