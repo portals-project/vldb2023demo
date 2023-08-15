@@ -24,9 +24,9 @@ import portals.vldb2023demo.Util.*
   *   Server running on localhost port 8080).
   *   {{{
   * // Submit the class files
-  * sbt "runMain portals.distributed.ClientCLI submitDir --directory target/scala-3.3.0/classes"
+  * sbt "runMain portals.vldb2023demo.ClientMain submitDir --directory target/scala-3.3.0/classes"
   * // Launch the application
-  * sbt "runMain portals.distributed.ClientCLI launch --application portals.vldb2023demo.sqltodataflow.SQLToRemoteDataflowTableApp$"
+  * sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.sqltodataflow.SQLToRemoteDataflowTableApp$"
   *   }}}
   *
   * @see
@@ -71,9 +71,9 @@ end SQLToRemoteDataflowTableApp
   *   Server running on localhost port 8080).
   *   {{{
   * // Submit the class files
-  * sbt "runMain portals.distributed.ClientCLI submitDir --directory target/scala-3.3.0/classes"
+  * sbt "runMain portals.vldb2023demo.ClientMain submitDir --directory target/scala-3.3.0/classes"
   * // Launch the application
-  * sbt "runMain portals.distributed.ClientCLI launch --application portals.vldb2023demo.sqltodataflow.SQLToRemoteDataflowQueryApp$"
+  * sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.sqltodataflow.SQLToRemoteDataflowQueryApp$"
   *   }}}
   *
   * @see
