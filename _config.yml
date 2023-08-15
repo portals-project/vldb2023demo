@@ -10,3 +10,5 @@ defaults:
     values:
       baseurl: /vldb2023demo
 baseurl: /vldb2023demo
+exclude:
+  - code/

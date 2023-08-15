@@ -21,13 +21,20 @@ More information on the SQL interface is available in a student thesis (the pres
 
 This demo comes in three flavours: `SQLToDataflow.scala`, `SQLToDataflowTxn.scala`, and `SQLToRemoteDataflow.scala`.
 
+> **Note**
+> To execute the demo yourself, check out the instructions in the code directory of this repository: [https://github.com/portals-project/vldb2023demo/tree/main/code](https://github.com/portals-project/vldb2023demo/tree/main/code).
+
+> **Note**
+> To executable code for this demo can be found in the code directory of this repository: [https://github.com/portals-project/vldb2023demo/tree/main/code](https://github.com/portals-project/vldb2023demo/tree/main/code).
+
+
 #### SQLToDataflow
 
 The simplest version is `SQLToDataflow.scala`, which runs both the table and the query workflow in the same Portals Application.
 
 ```scala
 /** Portals application which runs the queriable KV Table. */
-val tableApp = PortalsApp("SQLToDataflowTable"):
+PortalsApp("SQLToDataflowTable"):
 
   /** A Table Workflow which serves SQL queries for the table of type KV. */
   val table = TableWorkflow[Types.KV]("KVTable", "k")
@@ -54,7 +61,7 @@ In addition to this, we show how to also perform transactional queries (SQLToDat
 
 ```scala
 /** Portals application which runs the queriable KV Table. */
-val tableApp = PortalsApp("SQLToDataflowTable"):
+PortalsApp("SQLToDataflowTable"):
 
   /** A Table Workflow which serves SQL queries for the table of type KV. */
   val table = TableWorkflow[Types.KV]("KVTable", "k", true)
@@ -135,114 +142,3 @@ PortalsApp("SQLToDataflowRemote"):
 ```
 
 The remote example shows how to connect to a remote Table Workflow, as well as a remote Query workflow. This example has a query portal which manages the query workflow. In addition to this, it ahs a `queryWorkflow`, which connects to the query portal. This lets us inspect how an application would connect to the query portal: we can send a query to the query portal (`ask(queryPortal)(x)`), and await its result to, here the result is printed (`ctx.log.info(s"== Query: ${x}; Result: ${f.value.get} ==")`) and emitted.
-
-## Executing the Demo
-
-Follow these steps to run the demo.
-
-### Preparations
-
-To run this demo, you will have to either have published a local snapshot of Portals to your local Maven repository, or have a local Docker image of Portals.
-
-#### Clone the Portals Repository
-
-```bash
-git clone https://github.com/portals-project/portals.git
-cd portals
-```
-
-#### Publishing Portals to Your local Maven Repository
-
-To publish Portals to your local Maven repository, run the following command from the root of the Portals repository:
-
-```bash
-sbt publishLocal
-```
-
-#### Building a Local Docker Image of Portals
-
-To build a local Docker image of Portals, run the following command from the root of the Portals repository:
-
-```bash
-docker build -f scripts/deployment/docker/Dockerfile . -t portals
-```
-
-### Running the Demo
-
-We provide three options for running the demo: locally, or with a client/server using SBT or using Docker.
-
-#### Local Execution with SBT
-
-The local execution option is the simplest, and we can execute each of our examples using the following commands with SBT.
-
-To start, naviage to the source code of this demonstration:
-
-```bash
-cd code
-```
-
-Then, run the examples. 
-
-```bash
-sbt "runMain portals.vldb2023demo.sqltodataflow.SQLToDataflowMain"
-sbt "runMain portals.vldb2023demo.sqltodataflow.SQLToDataflowTxnMain"
-sbt "runMain portals.vldb2023demo.sqltodataflow.SQLToRemoteDataflowMain"
-```
-
-#### Server/Client Execution Using SBT
-
-We can also run the demo using a client/server model.
-
-To start, naviage to the source code of this demonstration:
-  
-```bash
-cd code
-```
-
-First, start the Portals server:
-
-```bash
-# Start the Portals server
-sbt "runMain portals.vldb2023demo.ServerMain localhost 8080"
-```
-
-Then, connect to the server using the Portals CLI:
-
-```bash
-# Submit the class files to the server
-sbt "runMain portals.vldb2023demo.ClientMain submitDir --directory target/scala-3.3.0/classes"
-# Launch the application
-sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.sqltodataflow.SQLToDataflow$"
-```
-
-#### Server/Client Execution Using Docker
-
-To start, naviage to the source code of this demonstration:
-
-```bash
-cd code
-```
-
-In order to launch this example using Docker, we will need to build a local Docker image of Portals which also contains this app.
-
-```bash
-docker build . -t vldb2023demo
-```
-
-Then, we can launch the server:
-
-```bash
-docker run --rm -it -p 8080:8080 vldb2023demo sbt "runMain portals.vldb2023demo.ServerMain 0.0.0.0 8080"
-```
-
-And, we can launch the client:
-
-```bash
-docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain submitDir --directory target/scala-3.3.0/classes --ip host.docker.internal --port 8080"
-docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.sqltodataflow.SQLToDataflow$ --ip host.docker.internal --port 8080"
-```
-
-## Notes
-
-> **Note**
-> The portals dockerfile must be built from the `portals-sql-experiment` branch, in order to include the Portals SQL library.
