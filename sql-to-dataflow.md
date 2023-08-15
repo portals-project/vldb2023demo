@@ -6,27 +6,26 @@ title: "Demo 2: SQL to Dataflow"
 # Demo 2: SQL to Dataflow
 The second scenario demonstrates a serverless application that runs a key-value store dataflow accessible through a portal with an SQL interface. The application shows how interesting abstractions (the SQL interface) can be built on top of the portal abstraction, leveraging the underlying guarantees and execution runtime. The example both exposes the SQL interface as a service using the Portal service abstraction, and uses portal services internally for implementation of the SQL evaluation strategy and key-value stores.
 
-The demo consists of two main portals applications: a key-value store dataflow; and a query dataflow. 
-The key-value store dataflow is also called the `Table Workflow`. It implements a key-value store that is exposed through a Portal service. The table workflow needs to manage the state transactionally; we have implement a simple 2PL for transactional workloads. 
-The query dataflow, also called the `Query Workflow`, implements a simple SQL interface, and translates SQL queries into requests to the table workflow. That is, the query workflow consumes SQL queries (either as a stream or through portal requests), and sends corresponding requests to the table workflows to retrieve the data and produce the result.
+The interface supports queries over multiple tables. However, it does not support range queries (for the moment). The SQL engine used by the SQL library is **[Apache Calcite](https://calcite.apache.org/)**.
 
-The queries, support queries over multiple tables. However, they do not support range queries (for the moment). The SQL engine used by the SQL library is **[Apache Calcite](https://calcite.apache.org/)**.
-
-The SQL interface can be leveraged for decentralized executions, in which edge Portals applications may connect to cloud-based key-value stores through the Portal service interface (for example, as an SQL interface), to query and update the state of the key-value store. This way, many edge runtimes could conveniently connect to the same key-value store. Due to the underlying guarantees, this would still guarantee exactly-once processing semantics, spanning over edge devices to serverless cloud instances.
+The SQL interface consists of two sides: a key-value store dataflow and a query dataflow. 
+The key-value store dataflow is also called the `Table Workflow`. It implements a key-value store that is exposed through a Portal service, and implements transactional state manageement using 2PL.
+The query dataflow, also called the `Query Workflow`, implements a simple SQL interface, and translates SQL queries into requests to the table workflow. That is, the query workflow consumes SQL queries (either as a stream or through portal requests), and sends corresponding requests to the table workflows to retrieve the data and produce the result. Internally, the query dataflow runs Apache Calcite to parse and evaluate the SQL queries.
 
 More information on the SQL interface is available in a student thesis (the presented work in this demo is a continuation of this thesis):
 * Huang C. Queryable Workflows: Extending Dataflow Streaming with Dynamic Request/Reply Communication [Internet] [Dissertation]. 2023. (TRITA-EECS-EX). Available from: [https://urn.kb.se/resolve?urn=urn:nbn:se:kth:diva-329594](https://urn.kb.se/resolve?urn=urn:nbn:se:kth:diva-329594)
 
-### Demo Experience
+## Demo Experience
 
-This demo comes in three flavours: `SQLToDataflow.scala`, `SQLToDataflowTxn.scala`, and `SQLToRemoteDataflow.scala`.
+The demo shows how to run SQL queries over a key-value store. It also shows how to connect multiple querying applications to the same key-value store, leveraging the decentralized execution model. A deep-dive into the source code will reveal that this is all implemented using the `workflow` and `portal` primitives. This demo comes in three flavours: `SQLToDataflow.scala`, `SQLToDataflowTxn.scala`, and `SQLToRemoteDataflow.scala`. 
 
 > **Note**
 > To execute the demo yourself, check out the instructions in the code directory of this repository: [https://github.com/portals-project/vldb2023demo/tree/main/code](https://github.com/portals-project/vldb2023demo/tree/main/code).
 
 > **Note**
-> To executable code for this demo can be found in the code directory of this repository: [https://github.com/portals-project/vldb2023demo/tree/main/code](https://github.com/portals-project/vldb2023demo/tree/main/code).
+> The executable code for this demo can be found in the code directory of this repository: [https://github.com/portals-project/vldb2023demo/tree/main/code](https://github.com/portals-project/vldb2023demo/tree/main/code).
 
+## Demo Overview
 
 #### SQLToDataflow
 
@@ -57,7 +56,7 @@ The example consists of a table workflow, a generated stream of queries, and the
 
 #### SQLToDataflowTxn
 
-In addition to this, we show how to also perform transactional queries (SQLToDataflowTxn), and how to perform queries to remote tables (SQLToRemoteDataflow, advanced). Not shown in the examples, is how to connect to multiple tables, in order to join inforation from multiple tables.
+In addition to this, we show how to also perform transactional queries (SQLToDataflowTxn), and how to perform queries to remote tables (SQLToRemoteDataflow, advanced). Not shown in the examples, is how to connect to multiple tables, in order to join information from multiple tables.
 
 ```scala
 /** Portals application which runs the queriable KV Table. */
@@ -141,4 +140,4 @@ PortalsApp("SQLToDataflowRemote"):
     .freeze()
 ```
 
-The remote example shows how to connect to a remote Table Workflow, as well as a remote Query workflow. This example has a query portal which manages the query workflow. In addition to this, it ahs a `queryWorkflow`, which connects to the query portal. This lets us inspect how an application would connect to the query portal: we can send a query to the query portal (`ask(queryPortal)(x)`), and await its result to, here the result is printed (`ctx.log.info(s"== Query: ${x}; Result: ${f.value.get} ==")`) and emitted.
+The remote example shows how to connect to a remote Table Workflow, as well as a remote Query workflow. This example has a query portal which manages the query workflow. In addition to this, it has a `queryWorkflow`, which connects to the query portal. This lets us inspect how an application would connect to the query portal: we can send a query to the query portal (`ask(queryPortal)(x)`), and await its result to, here the result is printed (`ctx.log.info(s"== Query: ${x}; Result: ${f.value.get} ==")`) and emitted.

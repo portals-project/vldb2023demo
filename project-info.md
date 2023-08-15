@@ -11,7 +11,7 @@ At its core, Portals unifies the Distributed Dataflow Streaming Model and the Ac
 
 1. **Multi-Dataflow Applications.** Multiple stateful dataflow streaming pipelines can dynamically be composed together on top of atomic streams, a transactional type of data streams.
 2. **Inter-Dataflow Services.** The Portal abstraction binds dataflow pipelines together to create and expose reusable services. This enables a request-reply type of communication between pipelines by providing serverless access to remote operator states on top of a continuation-style execution.
-3. **Decentralized Cloud and Local Execution.** The decentralized runtime can be executed on, and across, cloud and edge devices, whilst still providing end-to-end exactly-once processing guarantees.
+3. **Decentralized Cloud and Local Execution.** The decentralized runtime can be executed on cloud and edge devices, whilst still providing end-to-end exactly-once processing guarantees.
 
 Portals is a research project developed at the [KTH Royal Institute of Technology](https://www.kth.se/en) and [RISE Research Institutes of Sweden](https://www.ri.se/en) in Stockholm, Sweden.
 

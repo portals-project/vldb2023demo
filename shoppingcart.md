@@ -5,9 +5,9 @@ title: "Demo 1: Shopping Cart"
 
 # Demo 1: Shopping Cart
 
-The shopping cart scenario consists of four services: an inventory; cart; order; and an analytics service. The application shows how services can be dynamically composed together with inter-dependencies between them. Additionally, the application shows how the Portal service can be used as a core component for messaging between services.
+The shopping cart scenario consists of four services: an inventory, cart, order, and an analytics service. The application shows how services can be composed together dynamically. Additionally, the application shows how the Portal service can be used as a core component for connecting the services.
 
-The shopping cart's inventory manages the inventory state in an operator, and exposes this state as a portal service. It can handle either GetItem (take an item from the inventory) or PutItem (put the item back) requests. The user cart interacts with the inventory from one of its operators. For example, to add an item to the cart, it will have to request to get the item (GetItem) from the inventory, by calling the inventory portal, and await the response from the call. The successfully checked-out carts will be consumed by the order service. Lastly, there is an analytics service, that consumes the order history in order to provide real-time recommendations. In our example, this produces a top-100 list of item purchases, accessible as a portal service.
+The shopping cart's inventory manages is managed by a dataflow operator, which holds the state and exposes the state as a portal service. It can handle either GetItem (take an item from the inventory) or PutItem (put the item back) requests. Note that, in addition to replying to requests, an operator may also emit an event (on its outgoing stream) as a result to a request. The user cart interacts with the inventory from one of its operators. For example, to add an item to the cart, it will have to request to get the item (GetItem) from the inventory by calling the inventory portal, and await the response from the call. The successfully checked-out carts will be consumed by the order service. Lastly, there is an analytics service, that consumes the order history in order to provide real-time recommendations. In our example, this produces a top-100 list of item purchases, accessible as a portal service.
 
 ## Demo Experience
 
@@ -17,7 +17,9 @@ The demonstration will show, step-by-step, how each service is launched onto the
 > To execute the demo yourself, check out the instructions in the code directory of this repository: [https://github.com/portals-project/vldb2023demo/tree/main/code](https://github.com/portals-project/vldb2023demo/tree/main/code).
 
 > **Note**
-> To executable code for this demo can be found in the code directory of this repository: [https://github.com/portals-project/vldb2023demo/tree/main/code](https://github.com/portals-project/vldb2023demo/tree/main/code).
+> The full executable code for this demo can be found in the code directory of this repository: [https://github.com/portals-project/vldb2023demo/tree/main/code](https://github.com/portals-project/vldb2023demo/tree/main/code).
+
+## Demo Overview
 
 #### The Inventory Task and Workflow
 
@@ -93,7 +95,7 @@ PortalsApp("Inventory"):
     .freeze()
 ```
 
-Once this application is launched, then the inventory will be executing, and accessible as a service from other applications (both in a local deployment, but also in a remote runtime if it has valid access). Other applications can access both the streams of this application (`inventory.stream`), but also the exposed portal service as in the following section.
+Once this application is launched, the inventory will execute and be accessible as a service from other applications (both in a local deployment, but also in a remote runtime if it has valid access). Other applications can access both the streams of this application (`inventory.stream`), but also the exposed portal service as in the following section.
 
 ### The Cart Task and Workflow
 
@@ -152,7 +154,7 @@ end CartTask
 
 The most interesting case is the `AddToCart` event. This triggers the method `addToCart`, which sends a `Get(event.item)` request to the inventory. The task, then, awaits the response of this request (`await(resp)`). When the response arrives, the task will either update its internal state (if it was successfull in getting the item), or otherwise ignore it. We could also add the option here of sending a reply to the client, but we omit this for simplicity.
 
-Similarly to the inventory, in order to run the Cart Task, we execute it in a workflow in its own application. Here, the cart consumes a generator of cart operations (for generating cleint events such as AddToCart, RemoveFromCart, Checkout), and it connects to the remote portal using the `Registry`. The Cart workflow creates a task with the Cart Task, and connects to the Inventory's portal.
+Similarly to the inventory, in order to run the Cart Task, we execute it in a workflow in its own application. Here, the cart consumes a generator of cart operations (for generating client events such as AddToCart, RemoveFromCart, Checkout), and it connects to the remote portal using the `Registry`. The Cart workflow creates a task with the Cart Task, and connects to the Inventory's portal.
 
 ```scala
 PortalsApp("Cart"):
@@ -173,4 +175,4 @@ Now, the cart application can be launched, and it will automatically connect to 
 
 ### Orders and Analytics
 
-For the remaining tasks, we will not go into detail; they are available in the `code` directory in this repo for reference.
+The remaining tasks and workflows are available in the `code` directory of this repo for reference.
