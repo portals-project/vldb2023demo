@@ -23,7 +23,7 @@ import portals.vldb2023demo.Util.*
   * // uncomment the files you want to submit
   *
   * // submit the class files with the client
-  * sbt "runMain portals.vldb2023demo.ClientMain submitDir --directory portals-distributed/target/scala-3.3.0/classes"
+  * sbt "runMain portals.vldb2023demo.ClientMain submitDir --directory target/scala-3.3.0/classes"
   *
   * // launch each application with the client
   * sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Inventory$"

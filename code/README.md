@@ -150,6 +150,20 @@ docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain la
 docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Analytics$ --ip host.docker.internal --port 8080"
 ```
 
+##### Remote, Dynamic Execution
+
+In addition to the above examples, we can also connect two runtimes together using the `Remote` runtime. This allows us to dynamically connect to a remote runtime, and, for example, sending portals requests across runtimes.
+
+> **Note:** 
+> This example requires that Portals was built from the `remote-sql-merge` branch (this includes the Docker image as well as the Maven artifact).
+
+```bash
+# Start the first remote runtime, which launches also the shopping cart
+sbt "runMain portals.vldb2023demo.shoppingcart.dynamic.RemoteShoppingCartMain"
+# Start the second remote runtime, which launches a querying workflow
+sbt "runMain portals.vldb2023demo.shoppingcart.dynamic.DynamicQuery"
+```
+
 <!-- 
 ================================================================================ 
 == DEMO SCENARIO 2: SQL-TO-DATAFLOW
