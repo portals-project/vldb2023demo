@@ -4,8 +4,8 @@ This repository contains the source code for the VLDB 2023 demonstration paper. 
 
 Follow these steps to run the demo.
 
-> **Note**
-> The portals dockerfile must be built from the `portals-sql-experiment` branch, in order to include the Portals SQL library.
+> > **Note:** 
+> The portals dockerfile must be built from the `remote-sql-merge` branch, in order to include the Portals SQL library.
 
 <!--
 ================================================================================ 
@@ -46,7 +46,7 @@ docker build -f scripts/deployment/docker/Dockerfile . -t portals
 
 ##### Build a Local Docker Image of the VLDB 2023 Demo
 
-In the root of this repository, run the following command:
+In the root of this (`code`) repository, run the following command:
 
 ```bash
 docker build . -t vldb2023demo
@@ -81,6 +81,13 @@ docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain su
 docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.HelloVLDB$ --ip host.docker.internal --port 8080"
 ```
 
+We provide three options for running the demo:
+* Locally, with the Test runtime using SBT.
+* With a client/server using SBT.
+* With a client/server using Docker.
+
+In the following descriptions, we will be running the examples in a client/server model using SBT.
+
 <!--
 ================================================================================ 
 == DEMO SCENARIO 1: SHOPPING CART 
@@ -89,19 +96,15 @@ docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain la
 
 ## Demo 1: Shopping Cart
 
-We provide three options for running the demo:
-* Locally, with the Test runtime using SBT.
-* With a client/server using SBT.
-* With a client/server using Docker.
 
 In addition to this, there is an option to run the demo using Kubernetes (see [Tutorial Helper Script](#tutorial-helper-script)).
 
 ##### Local Execution with SBT
 
-The local execution option is the simplest option. We can execute each of our examples using the following commands with SBT.
+The local execution option is the simplest option. We can execute each of our examples using the following commands with SBT. We have some additional options detailed at the end of this file, that may not be up to date.
 
 ```bash
-sbt "runMain portals.vldb2023demo.shoppingcart.ShoppingCartLocalMain"
+sbt "runMain portals.vldb2023demo.shoppingcart.ShoppingCartLocalMain";
 ```
 
 ##### Server/Client Execution Using SBT
@@ -111,57 +114,27 @@ We can also run the demo using a client/server model.
 Start the server.
 
 ```bash
-sbt "runMain portals.vldb2023demo.ServerMain localhost 8080"
+sbt "runMain portals.vldb2023demo.ServerMain localhost 8080";
 ```
 
 Then, connect to the server using the Portals CLI:
 
 ```bash
 # Submit the class files to the server
-sbt "runMain portals.vldb2023demo.ClientMain submitDir --directory target/scala-3.3.0/classes --ip localhost --port 8080"
+sbt "runMain portals.vldb2023demo.ClientMain submitDir --directory target/scala-3.3.0/classes --ip localhost --port 8080";
 # Launch the application
-sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Inventory$ --ip localhost --port 8080"
-sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Cart$ --ip localhost --port 8080"
-sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Orders$ --ip localhost --port 8080"
-sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Analytics$ --ip localhost --port 8080"
+sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Inventory$ --ip localhost --port 8080";
+sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Cart$ --ip localhost --port 8080";
+sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Orders$ --ip localhost --port 8080";
+sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Analytics$ --ip localhost --port 8080";
+sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.dynamic.ShoppingCartProxy$ --ip localhost --port 8080";
 ```
 
-##### Server/Client Execution Using Docker
-
-In order to launch this example using Docker, we will need to build a local Docker image of Portals which also contains this app.
+Then, you can modify the DynamicQuery app, which may access the inventory, or analytics service, from a new runtime.
 
 ```bash
-docker build . -t vldb2023demo
-```
-
-Then, we can launch the server:
-
-```bash
-docker run --rm -it -p 8080:8080 vldb2023demo sbt "runMain portals.vldb2023demo.ServerMain 0.0.0.0 8080"
-```
-
-Followed by the clients:
-
-```bash
-docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain submitDir --directory target/scala-3.3.0/classes --ip host.docker.internal --port 8080"
-docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Inventory$ --ip host.docker.internal --port 8080"
-docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Cart$ --ip host.docker.internal --port 8080"
-docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Orders$ --ip host.docker.internal --port 8080"
-docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Analytics$ --ip host.docker.internal --port 8080"
-```
-
-##### Remote, Dynamic Execution
-
-In addition to the above examples, we can also connect two runtimes together using the `Remote` runtime. This allows us to dynamically connect to a remote runtime, and, for example, sending portals requests across runtimes.
-
-> **Note:** 
-> This example requires that Portals was built from the `remote-sql-merge` branch (this includes the Docker image as well as the Maven artifact).
-
-```bash
-# Start the first remote runtime, which launches also the shopping cart
-sbt "runMain portals.vldb2023demo.shoppingcart.dynamic.RemoteShoppingCartMain"
-# Start the second remote runtime, which launches a querying workflow
-sbt "runMain portals.vldb2023demo.shoppingcart.dynamic.DynamicQuery"
+# Start the second remote runtime, and send requests to the inventory/analytics service
+sbt "runMain portals.vldb2023demo.shoppingcart.dynamic.DynamicQuery";
 ```
 
 <!-- 
@@ -172,21 +145,14 @@ sbt "runMain portals.vldb2023demo.shoppingcart.dynamic.DynamicQuery"
 
 ## Demo 2: SQL-to-Dataflow
 
-We provide three options for running the demo: 
-* Locally, with the Test runtime using SBT.
-* With a client/server using SBT.
-* With a client/server using Docker.
-
-In addition to this, there is an option to run the demo using Kubernetes (see [Tutorial Helper Script](#tutorial-helper-script)).
-
 ##### Local Execution with SBT
 
 The local execution option is the simplest option. We can execute each of our examples using the following commands with SBT.
 
 ```bash
-sbt "runMain portals.vldb2023demo.sqltodataflow.SQLToDataflowMain"
-sbt "runMain portals.vldb2023demo.sqltodataflow.SQLToDataflowTxnMain"
-sbt "runMain portals.vldb2023demo.sqltodataflow.SQLToRemoteDataflowMain"
+sbt "runMain portals.vldb2023demo.sqltodataflow.SQLToDataflowMain";
+sbt "runMain portals.vldb2023demo.sqltodataflow.SQLToDataflowTxnMain";
+sbt "runMain portals.vldb2023demo.sqltodataflow.SQLToRemoteDataflowMain";
 ```
 
 ##### Server/Client Execution Using SBT
@@ -198,46 +164,23 @@ First, start the Portals server:
 
 ```bash
 # Start the Portals server
-sbt "runMain portals.vldb2023demo.ServerMain localhost 8080"
+sbt "runMain portals.vldb2023demo.ServerMain localhost 8080";
 ```
 
 Then, connect to the server using the Portals CLI:
 
 ```bash
 # Submit the class files to the server
-sbt "runMain portals.vldb2023demo.ClientMain submitDir --directory target/scala-3.3.0/classes"
+sbt "runMain portals.vldb2023demo.ClientMain submitDir --directory target/scala-3.3.0/classes --ip localhost --port 8080";
 # Launch the application
-sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.sqltodataflow.SQLToDataflow$"
+sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.sqltodataflow.SQLToRemoteDataflowTableApp$ --ip localhost --port 8080";
 ```
 
-##### Server/Client Execution Using Docker
-
-In order to launch this example using Docker, we will need to build a local Docker image of Portals which also contains this app.
+Then, you can modify the DynamicQuery app, which can send SQL queries on-demand to the running KV Tables.
 
 ```bash
-docker build . -t vldb2023demo
-```
-
-Then, we can launch the server:
-
-```bash
-docker run --rm -it -p 8080:8080 vldb2023demo sbt "runMain portals.vldb2023demo.ServerMain 0.0.0.0 8080"
-```
-
-And, we can launch the client:
-
-```bash
-docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain submitDir --directory target/scala-3.3.0/classes --ip host.docker.internal --port 8080"
-docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.sqltodataflow.SQLToDataflow$ --ip host.docker.internal --port 8080"
-```
-
-##### Remote, Dynamic Execution
-
-```bash
-# start the server together with the SQL app
-sbt "runMain portals.vldb2023demo.sqltodataflow.dynamic.RemoteSQLToDataflowMain"
-# start the dynamic query app in another runtime (make sure to set which queries you want to execute)
-sbt "runMain portals.vldb2023demo.sqltodataflow.dynamic.DynamicQuery"
+# Start a new runtime, and send requests to the query engine
+sbt "runMain portals.vldb2023demo.sqltodataflow.dynamic.DynamicQuery";
 ```
 
 <!-- 
@@ -249,7 +192,6 @@ sbt "runMain portals.vldb2023demo.sqltodataflow.dynamic.DynamicQuery"
 ## Demo Scenario 3: Playground
 
 The Playground is available at [https://portals-project.org/playground/](https://portals-project.org/playground/).
-
 
 <!-- 
 ================================================================================
@@ -332,3 +274,50 @@ This option combines the setup and run_example options without installing the re
 
 Use this option to tear down the tutorial example. It deletes the portals server deployment, effectively removing the running example.
 
+## Additional Options, Potentially Not Up to Date
+
+##### Shopping Cart Server/Client Execution Using Docker
+
+In order to launch this example using Docker, we will need to build a local Docker image of Portals which also contains this app.
+
+```bash
+docker build . -t vldb2023demo
+```
+
+Then, we can launch the server:
+
+```bash
+docker run --rm -it -p 8080:8080 vldb2023demo sbt "runMain portals.vldb2023demo.ServerMain 0.0.0.0 8080"
+```
+
+Followed by the clients:
+
+```bash
+docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain submitDir --directory target/scala-3.3.0/classes --ip host.docker.internal --port 8080"
+docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Inventory$ --ip host.docker.internal --port 8080"
+docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Cart$ --ip host.docker.internal --port 8080"
+docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Orders$ --ip host.docker.internal --port 8080"
+docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Analytics$ --ip host.docker.internal --port 8080"
+docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.dynamic.ShoppingCartProxy$ --ip host.docker.internal --port 8080"
+```
+
+##### SQL Server/Client Execution Using Docker
+
+In order to launch this example using Docker, we will need to build a local Docker image of Portals which also contains this app.
+
+```bash
+docker build . -t vldb2023demo
+```
+
+Then, we can launch the server:
+
+```bash
+docker run --rm -it -p 8080:8080 vldb2023demo sbt "runMain portals.vldb2023demo.ServerMain 0.0.0.0 8080"
+```
+
+And, we can launch the client:
+
+```bash
+docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain submitDir --directory target/scala-3.3.0/classes --ip host.docker.internal --port 8080"
+docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.sqltodataflow.SQLToDataflow$ --ip host.docker.internal --port 8080"
+```

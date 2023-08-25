@@ -34,22 +34,22 @@ import portals.vldb2023demo.shoppingcart.ShoppingCartEvents.*
   * @example
   *   {{{
   * // start the server (in a different terminal)
-  * sbt "distributed/runMain portals.distributed.remote.RemoteSBTRunServer localhost 8080"
+  * sbt "runMain portals.vldb2023demo.ServerMain localhost 8080"
   *
   * // start the shopping cart app
-  * sbt "distributed/runMain portals.distributed.ClientCLI submitDir --directory portals-distributed/target/scala-3.3.0/classes --ip localhost --port 8080"
-  * sbt "distributed/runMain portals.distributed.ClientCLI launch --application portals.vldb2023demo.shoppingcart.Inventory$  --ip localhost --port 8080"
-  * sbt "distributed/runMain portals.distributed.ClientCLI launch --application portals.vldb2023demo.shoppingcart.Cart$  --ip localhost --port 8080"
-  * sbt "distributed/runMain portals.distributed.ClientCLI launch --application portals.vldb2023demo.shoppingcart.Orders$  --ip localhost --port 8080"
-  * sbt "distributed/runMain portals.distributed.ClientCLI launch --application portals.vldb2023demo.shoppingcart.Analytics$  --ip localhost --port 8080"
-  * sbt "distributed/runMain portals.distributed.ClientCLI launch --application portals.vldb2023demo.shoppingcart.dynamic.ShoppingCartProxy$ --ip localhost --port 8080"
+  * sbt "runMain portals.vldb2023demo.ClientMain submitDir --directory target/scala-3.3.0/classes --ip localhost --port 8080"
+  * sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Inventory$  --ip localhost --port 8080"
+  * sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Cart$  --ip localhost --port 8080"
+  * sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Orders$  --ip localhost --port 8080"
+  * sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.Analytics$  --ip localhost --port 8080"
+  * sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.dynamic.ShoppingCartProxy$ --ip localhost --port 8080"
   *
   * // start a new server for the dynamic query app
-  * sbt "distributed/runMain portals.distributed.remote.RemoteSBTRunServer localhost 8081"
+  * sbt "runMain portals.distributed.remote.RemoteSBTRunServer localhost 8081"
   *
   * // start the dynamic query app
-  * sbt "distributed/runMain portals.distributed.ClientCLI submitDir --directory portals-distributed/target/scala-3.3.0/classes --ip localhost --port 8081"
-  * sbt "distributed/runMain portals.distributed.ClientCLI launch --application portals.vldb2023demo.shoppingcart.dynamic.DynamicQuery$ --ip localhost --port 8081"
+  * sbt "runMain portals.vldb2023demo.ClientMain submitDir --directory portals-distributed/target/scala-3.3.0/classes --ip localhost --port 8081"
+  * sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.shoppingcart.dynamic.DynamicQuery$ --ip localhost --port 8081"
   *   }}}
   */
 object DynamicQuery extends SubmittableApplication:
@@ -73,30 +73,30 @@ object DynamicQuery extends SubmittableApplication:
       // QUERY THE INVENTORY SERVICE
       //////////////////////////////////////////////////////////////////////////
 
-      // A remote reference to the inventory service
-      val inventory = RemoteRegistry.portals.get[String, String](
-        s"http://$remoteHost:$remotePort",
-        "/ProxyServices/portals/inventory",
-      )
+      // // A remote reference to the inventory service
+      // val inventory = RemoteRegistry.portals.get[String, String](
+      //   s"http://$remoteHost:$remotePort",
+      //   "/ProxyServices/portals/inventory",
+      // )
 
-      // A stream with a single element to trigger the query
-      val inventoryQueryStream = Generators.signal("Get 1").stream
+      // // A stream with a single element to trigger the query
+      // val inventoryQueryStream = Generators.signal("Get 1").stream
 
-      // The workflow which queries the services
-      val _ = Workflows[String, String]()
-        .source(inventoryQueryStream)
-        .asker(inventory): x =>
-          // Send the request to the inventory service
-          ask(inventory)(x).onComplete:
-            case Success(r) =>
-              // Log and emit successfull results
-              log.info(s"Got result: $r")
-              emit(r)
-            case Failure(e) =>
-              log.error(s"Error: $e")
-              emit(s"Error: $e")
-        .sink()
-        .freeze()
+      // // The workflow which queries the services
+      // val _ = Workflows[String, String]()
+      //   .source(inventoryQueryStream)
+      //   .asker(inventory): x =>
+      //     // Send the request to the inventory service
+      //     ask(inventory)(x).onComplete:
+      //       case Success(r) =>
+      //         // Log and emit successfull results
+      //         log.info(s"Got result: $r")
+      //         emit(r)
+      //       case Failure(e) =>
+      //         log.error(s"Error: $e")
+      //         emit(s"Error: $e")
+      //   .sink()
+      //   .freeze()
 
       //////////////////////////////////////////////////////////////////////////
       // QUERY THE ANALYTICS SERVICE
