@@ -231,6 +231,15 @@ docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain su
 docker run --rm -it vldb2023demo sbt "runMain portals.vldb2023demo.ClientMain launch --application portals.vldb2023demo.sqltodataflow.SQLToDataflow$ --ip host.docker.internal --port 8080"
 ```
 
+##### Remote, Dynamic Execution
+
+```bash
+# start the server together with the SQL app
+sbt "runMain portals.vldb2023demo.sqltodataflow.dynamic.RemoteSQLToDataflowMain"
+# start the dynamic query app in another runtime (make sure to set which queries you want to execute)
+sbt "runMain portals.vldb2023demo.sqltodataflow.dynamic.DynamicQuery"
+```
+
 <!-- 
 ================================================================================ 
 == DEMO SCENARIO 3: PLAYGROUND

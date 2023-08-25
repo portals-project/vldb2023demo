@@ -16,20 +16,20 @@ object Data:
   // QUERY TYPES
   //////////////////////////////////////////////////////////////////////////////
 
-  private inline def insert_into(table: String, k: Int, v: Int): String =
+  inline def insert_into(table: String, k: Int, v: Int): String =
     s"INSERT INTO $table (k, v) Values ($k, $v)"
 
-  private inline def select_from(table: String, k: Int): String =
+  inline def select_from(table: String, k: Int): String =
     s"SELECT * FROM $table WHERE k = $k"
 
-  private inline def select_from_where(table: String, v: Int, ks: List[Int]): String =
+  inline def select_from_where(table: String, v: Int, ks: List[Int]): String =
     s"SELECT * FROM $table WHERE v = $v AND k in (${ks.mkString(", ")})"
 
   //////////////////////////////////////////////////////////////////////////////
   // NON TRANSACTIONAL
   //////////////////////////////////////////////////////////////////////////////
 
-  private def queries: Iterator[Iterator[String]] =
+  def queries: Iterator[Iterator[String]] =
     Iterator
       // info: to make the iterator infinite, use `Iterator.continually` instead
       .fill(N_EVENTS) {
@@ -54,7 +54,7 @@ object Data:
   // TRANSACTIONAL
   //////////////////////////////////////////////////////////////////////////////
 
-  private def transactionalQueries: Iterator[Iterator[TxnQuery]] =
+  def transactionalQueries: Iterator[Iterator[TxnQuery]] =
     Iterator
       .fill(N_EVENTS) {
         rand.nextInt(2) match

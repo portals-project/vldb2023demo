@@ -23,9 +23,9 @@ object Inventory extends SubmittableApplication:
   override def apply(): Application =
     PortalsApp("Inventory"):
       val inventoryOpsGenerator = Generators.generator(ShoppingCartData.inventoryOpsGenerator)
-      
+
       val portal = Portal[InventoryReqs, InventoryReps]("inventory", keyFrom)
-      
+
       val inventory = Workflows[InventoryReqs, Nothing]("inventory")
         .source(inventoryOpsGenerator.stream)
         .key(keyFrom(_))
