@@ -101,7 +101,7 @@ object SQLToRemoteDataflowQueryApp extends SubmittableApplication:
         */
       val queryWorkflow = Workflows[String, String]("queryWorkflow")
         .source(generator.stream)
-        .logger("Query:  ")
+        // .logger("Query:  ")
         .asker(queryPortal) { x =>
           // ask the query portal to execute the query
           val f = ask(queryPortal)(x)
@@ -112,7 +112,7 @@ object SQLToRemoteDataflowQueryApp extends SubmittableApplication:
             emit(f.value.get)
           }
         }
-        .logger("Results: ")
+        // .logger("Results: ")
         .sink()
         .freeze()
 end SQLToRemoteDataflowQueryApp
